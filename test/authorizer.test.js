@@ -6,7 +6,8 @@ const { promisify } = require('util')
 
 test('add user and authenticate/authorize', async function (t) {
   t.plan(8)
-  const authorizer = new Authorizer()
+  const authorizer = new Authorizer({})
+  await authorizer.init()
 
   const username = 'aedes'
   const password = 'rocks'

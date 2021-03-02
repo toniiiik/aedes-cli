@@ -68,15 +68,14 @@ test('throws error when invalid command', async function (t) {
   }
 })
 
-test('do not setup authorizer if credentials is not found', async function (t) {
+test('do not setup authorizer if authorizer is not defined', async function (t) {
   t.plan(1)
 
-  const setup = await start(['--credentials', credentialsFile])
+  const setup = await start(['--authorizer.type', 'dummy'])
 
   t.tearDown(stop.bind(t, setup))
 
-  const broker = setup.broker
-  const success = await promisify(broker.authenticate)(null, null, null)
+  const success = await promisify(setup.broker.authenticate)(null, null, null)
   t.equal(success, true, 'should authorize everyone')
 })
 
@@ -86,7 +85,7 @@ test('add/remove user and load authorizer', async function (t) {
   const username = 'aedes'
   const password = 'rocks'
 
-  let args = ['--credentials', credentialsFile, 'adduser', username, password]
+  let args = ['--authorizer.type', './authorizer', '--authorizer.credentials', credentialsFile, 'adduser', username, password]
 
   await start(args)
 
@@ -96,7 +95,7 @@ test('add/remove user and load authorizer', async function (t) {
 
   t.equal(!!user, true, 'user has been successfully created')
 
-  args = ['--credentials', credentialsFile]
+  args = ['--authorizer.type', './authorizer', '--authorizer.credentials', credentialsFile]
 
   const setup = await start(args)
 
@@ -106,7 +105,7 @@ test('add/remove user and load authorizer', async function (t) {
 
   await stop(setup)
 
-  args = ['--credentials', credentialsFile, 'rmuser', username]
+  args = ['--authorizer.type', './authorizer', '--authorizer.credentials', credentialsFile, 'rmuser', username]
 
   await start(args)
 
@@ -131,7 +130,7 @@ test('add/remove user from credentials throws error', async function (t) {
     await start(args)
   } catch (error) {
     console.log(error.message)
-    t.equal(error.message, 'you must specify a valid credential file using --credentials option', 'adduser throws error')
+    t.equal(error.message, 'you must specify a valid authorizer configuration. User config file with --config option or set --authorizer.* values', 'adduser throws error')
   }
 
   args = ['rmuser', username]
@@ -139,7 +138,7 @@ test('add/remove user from credentials throws error', async function (t) {
   try {
     await start(args)
   } catch (error) {
-    t.equal(error.message, 'you must specify a valid credential file using --credentials option', 'rmuser throws error')
+    t.equal(error.message, 'you must specify a valid authorizer configuration. User config file with --config option or set --authorizer.* values', 'rmuser throws error')
   }
 })
 
