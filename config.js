@@ -11,8 +11,7 @@ module.exports = {
   rejectUnauthorized: true,
   // AUTHORIZER
   authorizer: {
-    type: './authorizer',
-    credentials: './credentials.json'
+    type: 'aedes-keycloak-authorizer'
   },
   // AEDES
   brokerId: 'aedes-cli',

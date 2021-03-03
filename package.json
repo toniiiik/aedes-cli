@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "aedes": "^0.44.0",
+    "aedes-keycloak-authorizer": "^1.0.0",
     "aedes-persistence-mongodb": "^8.1.2",
     "aedes-persistence-redis": "^8.0.0",
     "aedes-stats": "^4.0.0",

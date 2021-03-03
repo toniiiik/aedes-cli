@@ -17,6 +17,7 @@
   - [Usage](#usage)
   - [Docker](#docker)
   - [Authorization](#authorization)
+    - [Keycloak authorization](#keycloak-authorization)
   - [Persistence and Emitters](#persistence-and-emitters)
 
 ## Install
@@ -236,6 +237,22 @@ $ aedes --credentials ./credentials.json
 
 The patterns are checked and validated using [Minimatch](https://github.com/isaacs/minimatch).
 The credentials file is automatically reloaded by aedes when it receives a `SIGHUP`.
+
+### Keycloak authorization
+
+Aedes support authorization of jwt token issued by OIDC server. It its possible to use build in authorizer [aedes-keycloak-authorizer](https://github.com/toniiiik/aedes-keycloak-authorizer). To setup keycloak authorizer set authorizer type in config.
+```js
+module.exports = {
+...
+  // AUTHORIZER
+  authorizer: {
+    type: 'aedes-keycloak-authorizer'
+  },
+...
+}
+
+```
+
 
 ## Persistence and Emitters
 
